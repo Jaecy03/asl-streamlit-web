@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import cv2
+st.write("OpenCV version:", cv2.__version__)
 import tensorflow as tf
 import pickle
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
