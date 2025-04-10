@@ -1,7 +1,6 @@
 import streamlit as st
 
 # Load other packages only after Streamlit app starts
-@st.cache_resource
 def load_dependencies():
     import numpy as np
     import cv2
