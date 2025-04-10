@@ -1,11 +1,21 @@
 import streamlit as st
-import numpy as np
-import cv2
-import tensorflow as tf
-import pickle
-from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
-import mediapipe as mp
-from collections import deque
+
+# Load other packages only after Streamlit app starts
+@st.cache_resource
+def load_dependencies():
+    import numpy as np
+    import cv2
+    import tensorflow as tf
+    import pickle
+    from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
+    import mediapipe as mp
+    from collections import deque
+
+    return np, cv2, tf, pickle, webrtc_streamer, VideoTransformerBase, mp, deque
+
+# Trigger dependency loading
+np, cv2, tf, pickle, webrtc_streamer, VideoTransformerBase, mp, deque = load_dependencies()
+
 
 # Paths
 ALPHABET_MODEL_PATH = "models/asl_alphabet_model.h5"
