@@ -1,16 +1,14 @@
 import streamlit as st
 import numpy as np
 import cv2
-st.write("OpenCV version:", cv2.__version__)
 import tensorflow as tf
 import pickle
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 import mediapipe as mp
 from collections import deque
 
-# Trigger dependency loading
-np, cv2, tf, pickle, webrtc_streamer, VideoTransformerBase, mp, deque = load_dependencies()
-
+# Print OpenCV version for debugging
+st.write("OpenCV version:", cv2.__version__)
 
 # Paths
 ALPHABET_MODEL_PATH = "models/asl_alphabet_model.h5"
@@ -112,15 +110,15 @@ class ASLRecognizer(VideoTransformerBase):
         cv2.putText(annotated, f"Confidence: {self.confidence:.2f}", (10, 80),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-        return annotated  # ✅ always return a frame!
-
+        return annotated
 
 # Start webcam stream
 webrtc_streamer(
     key="asl",
     video_transformer_factory=ASLRecognizer,
-    media_stream_constraints={"video": True, "audio": False}
+    media_stream_constraints={"video": True, "audio": False},
 )
+
 
 
 
