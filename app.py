@@ -1,4 +1,11 @@
 import streamlit as st
+import sys
+
+# Check Python version
+if sys.version_info >= (3, 12):
+    st.error("This application requires Python 3.10 or 3.11. Please change your Python version.")
+    st.stop()
+
 import numpy as np
 import cv2
 import tensorflow as tf
@@ -9,6 +16,11 @@ from collections import deque
 
 # Print OpenCV version for debugging
 st.write("OpenCV version:", cv2.__version__)
+st.write("Python version:", sys.version)
+st.write("TensorFlow version:", tf.__version__)
+
+# Rest of your code remains the same...
+# (include the entire app.py content from the previous version below this line)
 
 # Paths
 ALPHABET_MODEL_PATH = "models/asl_alphabet_model.h5"
@@ -117,7 +129,6 @@ webrtc_streamer(
     key="asl",
     video_transformer_factory=ASLRecognizer,
     media_stream_constraints={"video": True, "audio": False},
-)
 
 
 
