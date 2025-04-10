@@ -73,8 +73,13 @@ class ASLRecognizer(VideoTransformerBase):
             )
 
     def transform(self, frame):
+        # Get image as array
         img = frame.to_ndarray(format="bgr24")
+
+        # Convert to RGB for MediaPipe
         rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+        # Process frame
         results = self.processor.process(rgb)
 
         if mode == "Alphabet":
@@ -95,12 +100,15 @@ class ASLRecognizer(VideoTransformerBase):
                 if self.confidence > 0.5:
                     self.prediction = encoder.inverse_transform([np.argmax(prediction)])[0]
 
-        # Display prediction and confidence
-        cv2.putText(img, f"Prediction: {self.prediction}", (10, 40),
+        # Always draw something so Streamlit gets output
+        annotated = img.copy()
+        cv2.putText(annotated, f"Prediction: {self.prediction}", (10, 40),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
-        cv2.putText(img, f"Confidence: {self.confidence:.2f}", (10, 80),
+        cv2.putText(annotated, f"Confidence: {self.confidence:.2f}", (10, 80),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        return img
+
+        return annotated  # ✅ always return a frame!
+
 
 # Start webcam stream
 webrtc_streamer(
@@ -108,5 +116,6 @@ webrtc_streamer(
     video_transformer_factory=ASLRecognizer,
     media_stream_constraints={"video": True, "audio": False}
 )
+
 
 
